@@ -1,24 +1,9 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import { hot } from "react-hot-loader/root";
+import ReactDOM from 'react-dom'
+import router from './route'
 
-function App() {
-  const [haha, setHaha] = useState("111");
-  return (
-    <div>
-      <div onClick={() => setHaha("22222222222")}>click</div>
-      <span>{haha}</span>
-    </div>
-  );
-}
-hot(App);
-const render = (Component) => {
-  return ReactDOM.render(<Component />, document.getElementById("app"));
-};
-render(App);
+
+ReactDOM.render(router, document.getElementById('app'))
 
 if (module.hot) {
-  module.hot.accept(App, () => {
-    render(App);
-  });
+  module.hot.accept()
 }

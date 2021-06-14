@@ -1,6 +1,5 @@
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin"); //每次构建前清理 /dist 文件夹
-// const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //生成html 并自动添加bundles文件
 
 const isProd = process.env.NODE_ENV === "production";
@@ -24,9 +23,10 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(j|t)sx?$/,
+        exclude: /(node_modules|bower_components)/,
         loader: "babel-loader",
-        exclude: /node_modules/,
+        include: path.resolve(__dirname, "../src"),
       },
       {
         test: /\.css$/,
@@ -45,18 +45,16 @@ module.exports = {
   plugins: [
     // 对于 CleanWebpackPlugin 的 v2 versions 以下版本，使用 new CleanWebpackPlugin(['dist/*'])
     new CleanWebpackPlugin(),
-    // new FriendlyErrorsWebpackPlugin({}),
     new HtmlWebpackPlugin({
-      filename: "index.html",
-      title: isProd ? "xixi" : "haha",
-      template: "src/index-template.html", //指定html模板，可以向其输出指定内容(采用ejs模板语法)  webpack 5.4.0报错
-      // templateContent: fs.readFileSync("src/index-template.html", "utf-8"),
+      filename: 'index.html',
+      title: "webpack5+react17",
+      template: "public/index-template.html", //指定html模板，可以向其输出指定内容(采用ejs模板语法)  webpack 5.4.0报错
     }),
   ],
   resolve: {
-    extensions: [".js", ".jsx", ".less", ".css", ".wasm"], //后缀名自动补全
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".less", ".css", ".wasm"], //后缀名自动补全
     alias: {
-      "react-dom": "@hot-loader/react-dom",
+      "@": path.resolve(__dirname, '../src'),
     },
   },
 };

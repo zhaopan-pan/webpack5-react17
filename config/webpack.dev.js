@@ -1,22 +1,20 @@
-const webpack = require("webpack");
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin"); //生成html 并自动添加bundles文件
-const { CleanWebpackPlugin } = require("clean-webpack-plugin"); //每次构建前清理 /dist 文件夹
-const WebpackBar = require("WebpackBar");
-const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
-const pk = require("../package.json");
-const fs = require("fs");
-const { merge } = require("webpack-merge");
-const baseConfig = require("./webpack.base.js");
+const webpack = require('webpack');
+const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //每次构建前清理 /dist 文件夹
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const { merge } = require('webpack-merge');
+const baseConfig = require('./webpack.base.js');
+const ESLintPlugin = require('eslint-webpack-plugin'); // 已经替代eslint-loader，webpack官方文档out
+const { transformer, formatter } = require('./utils/resolve-error');
 
 module.exports = merge(baseConfig, {
-  mode: "development",
+  mode: 'development',
   output: {
-    filename: "[name].[contenthash].js",
-    path: path.resolve(__dirname, "/dist"), //dev模式下存在于内存中
-    publicPath: "/",
+    filename: '[name].[contenthash].js',
+    path: path.resolve(__dirname, '/dist'), //dev模式下存在于内存中
+    publicPath: '/',
   },
-  stats: "errors-only",
+  devtool: 'eval-source-map', // 报错的时候在控制台输出哪一行报错
   optimization: {
     // moduleIds: false,
     /**
@@ -25,44 +23,38 @@ module.exports = merge(baseConfig, {
      * optimization.runtimeChunk 就是告诉 webpack 是否要把这部分单独打包出来.
      */
     //提取引导模板
-    runtimeChunk: "single",
+    runtimeChunk: 'single',
     //代码分割/模块分离
     splitChunks: {
       cacheGroups: {
         //将第三方库(library)（例如 lodash 或 react很少像本地的源代码那样频繁修改）提取到单独的 vendor chunk 文件中
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all",
+          name: 'vendors',
+          chunks: 'all',
         },
       },
     },
   },
-  devtool: "inline-source-map",
-  // devServer: {
-  //   contentBase: "./dist", //静态文件目录
-  //   hot: true, //启用热更新
-  //   port: "8081", //测试服务端口
-  // },
-
   // module: {
   //   rules: [],
   // },
   plugins: [
-    new HtmlWebpackPlugin({
-      filename: "index.html",
-      title: "haha",
-      template: "src/index-template.html", //指定html模板，可以向其输出指定内容(采用ejs模板语法)  webpack 5.4.0报错
-      // templateContent: fs.readFileSync("src/index-template.html", "utf-8"),
-    }),
     new CleanWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new FriendlyErrorsWebpackPlugin({ clearConsole: true }),
+    new FriendlyErrorsPlugin({
+      // should the console be cleared between each compilation?
+      // default is true
+      clearConsole: true,
+      // add formatters and transformers (see below)
+      additionalFormatters: [formatter],
+      additionalTransformers: [transformer],
+    }),
+    new ESLintPlugin({
+      extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+      eslintPath: require.resolve('eslint'),
+      cache: true,
+    }),
   ],
-  resolve: {
-    extensions: [".js", ".jsx", ".less", ".css", ".wasm"], //后缀名自动补全
-    alias: {
-      "@": path.resolve(__dirname, "src"),
-    },
-  },
+  resolve: {},
 });

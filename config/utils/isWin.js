@@ -1,0 +1,1 @@
+module.exports = isWin = () => process.platform === "win32" || process.platform === "win64"
