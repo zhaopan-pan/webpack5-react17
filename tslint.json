@@ -1,8 +1,6 @@
 {
     "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended"
-    ],
+    "extends": ["tslint:recommended"],
     "rules": {
         "await-promise": false,
         "no-console": false,

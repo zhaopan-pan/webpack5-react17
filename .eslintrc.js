@@ -18,6 +18,7 @@ module.exports = {
     },
     sourceType: 'module',
     ecmaVersion: 6,
+    legacyDecorators: true
   },
   plugins: ['react', '@typescript-eslint'],
   settings: {
@@ -27,8 +28,9 @@ module.exports = {
     },
   },
   rules: {
+    "@typescript-eslint/no-inferrable-types": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
-    quotes: ['error', 'single'],
+    quotes: ['error', 'single', { "allowTemplateLiterals": true }],
     'no-console': 0,
     'no-debugger': 1,
     'no-var': 1,

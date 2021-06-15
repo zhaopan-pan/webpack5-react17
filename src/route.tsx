@@ -1,7 +1,8 @@
 import React from 'react'
-import { Router, Route } from 'react-router'
-import { createBrowserHistory } from 'history'
-import App from '@/App'
+import { Router, Route, Switch } from 'react-router-dom'
+import { createHashHistory } from 'history'
+import Home from '@/views/Home'
+import User from '@/views/user'
 
 const About = () => {
     return <>About </>
@@ -9,9 +10,12 @@ const About = () => {
 
 const routes = () => {
     return (
-        <Router history={createBrowserHistory()}>
-            <Route path="/" component={App} />
-            <Route path="/about" component={About} />
+        <Router history={createHashHistory()}>
+            <Switch>
+                <Route exact path="/" component={Home} />
+                <Route path="/about" component={About} />
+                <Route path="/user" component={User} />
+            </Switch>
         </Router>
     )
 }
