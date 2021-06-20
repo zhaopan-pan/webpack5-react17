@@ -3,8 +3,6 @@ import { observer } from 'mobx-react'
 import { renderRoutes, RouteConfig } from 'react-router-config'
 import { Link } from 'react-router-dom'
 import styles from './style.css'
-// import test from '../test'
-console.log(styles)
 
 interface IProps {
     route?: RouteConfig
@@ -17,7 +15,6 @@ interface IProps {
 
 const Layout: React.FC<any> = (props: IProps) => {
     const { route } = props
-    console.log('route:', route)
     return (
         <div className={styles.container}>
             <div className={styles.header}>header</div>

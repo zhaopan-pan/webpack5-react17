@@ -12,15 +12,14 @@ interface IProps {
 @observer
 class User extends Component<IProps> {
     store: UserStore = Store()
-    #aa = 112233
+    #pageName: string = 'user'
     constructor(props: IProps) {
         super(props)
-        console.log('user-store', this.store)
     }
     render() {
         return (
             <div>
-                <div>{`私有属性${this.#aa}`}</div>
+                <div>{`${this.#pageName}`}</div>
                 <div>{`人数：${this.store.count}`}</div>
                 <button
                     onClick={() => {

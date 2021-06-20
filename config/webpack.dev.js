@@ -68,11 +68,15 @@ module.exports = merge(baseConfig, {
                 // .less 解析
                 test: /\.less$/,
                 use: [
-                    'style-loader', // 将模块导出的内容作为样式并添加到 DOM 中
-                    'css-loader', // 加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码
-                    'postcss-loader', //  使用 PostCSS 加载并转换 CSS/SSS 文件
+                    // 将模块导出的内容作为样式并添加到 DOM 中
+                    'style-loader',
+                    // 加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码
+                    'css-loader',
+                    //  使用 PostCSS 加载并转换 CSS/SSS 文件
+                    'postcss-loader',
                     {
-                        loader: 'less-loader', //  加载并编译 LESS 文件
+                        //  加载并编译 LESS 文件
+                        loader: 'less-loader',
                         options: {
                             lessOptions: {
                                 strictMath: true

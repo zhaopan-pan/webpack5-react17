@@ -8,6 +8,7 @@ const mount = require('koa-mount')
 const isWin = require('./utils/isWin')
 const getIPv4IP = require('./utils/getIPv4IP')
 const projectConfig = require('../project.config')
+const chalk = require('chalk')
 
 const app = new koa()
 
@@ -28,9 +29,9 @@ if (argvIp) {
 
 const devUrl = `http://${argvIp ? argvIp : 'localhost'}:${port}${webpackConfig.output.publicPath}`
 const defaultUrl = `${devUrl}#${projectConfig.realPath}`
-exports.defaultUrl = defaultUrl
 if (process.env.NODE_ENV == 'production') {
-    console.log('--------模拟生产服务器---------')
+    console.log(chalk.green('----------模拟生产服务器--------'))
+    console.log(chalk.green('==> 🌎 Open up ' + chalk.yellow(defaultUrl) + ' in your browser.'))
     /**
      * koa-mount是一个将中间件挂载到指定路径的Koa中间件。它可以挂载任意Koa中间件！
      * koa-static是一个中间件，所以koa-mount可以和koa-static结合，以实现和express一样的静态服务请求前缀的功能。

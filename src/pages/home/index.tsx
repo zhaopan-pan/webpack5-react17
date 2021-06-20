@@ -25,7 +25,6 @@ const Home: React.FC<any> = (props: IProps) => {
             >
                 user
             </button>
-            {/* {renderRoutes(route!.routes)} */}
         </>
     )
 }
