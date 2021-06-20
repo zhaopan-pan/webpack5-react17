@@ -1,4 +1,5 @@
 module.exports = {
     publicPath: '/',
-    realPath: '/index'
+    realPath: '/index',
+    port: 3000
 }

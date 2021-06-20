@@ -7,11 +7,11 @@ const devServerConfig = require('./dev-server-config.js')
 const mount = require('koa-mount')
 const isWin = require('./utils/isWin')
 const getIPv4IP = require('./utils/getIPv4IP')
-const projectCon = require('../project.config')
+const projectConfig = require('../project.config')
 
 const app = new koa()
 
-const port = 3000
+const port = projectConfig.port
 let argvIp = 0
 if (process.argv.some(i => i === 'ip')) {
     argvIp = getIPv4IP()
@@ -27,7 +27,7 @@ if (argvIp) {
 }
 
 const devUrl = `http://${argvIp ? argvIp : 'localhost'}:${port}${webpackConfig.output.publicPath}`
-const defaultUrl = `${devUrl}#${projectCon.realPath}`
+const defaultUrl = `${devUrl}#${projectConfig.realPath}`
 exports.defaultUrl = defaultUrl
 if (process.env.NODE_ENV == 'production') {
     console.log('--------模拟生产服务器---------')
