@@ -22,7 +22,13 @@
         "typeRoots": ["node", "node_modules/@types"],
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["src/*"],
+            "@/hooks/*": ["src/hooks/*"],
+            "@/container/*": ["src/container/*"],
+            "@/store/*": ["src/store/*"],
+            "@/styles/*": ["src/styles/*"],
+            "@/assets/*": ["src/assets/*"],
+            "@/component/*": ["src/component/*"]
         }
     },
     "include": ["./src/*", "./declaration.d.ts"],

@@ -1,21 +1,5 @@
-import { observable, action, makeObservable } from 'mobx'
+import commonStore from '@/store/common'
 
-class Store {
-    constructor() {
-        // makeObservable(this)
-    }
-
-    @observable
-    count: number = 0
-
-    @action
-    add = () => {
-        this.count = this.count + 1
-    }
-
-    @action
-    reduce = () => {
-        this.count = this.count - 1
-    }
+export default {
+    commonStore
 }
-export default makeObservable(new Store())

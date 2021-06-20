@@ -3,7 +3,7 @@ import { observable, action, makeObservable } from 'mobx'
 const store = {}
 const skey = `/UserStore`
 
-class UserStore {
+export class UserStore {
     constructor() {
         makeObservable(this)
     }
@@ -21,7 +21,7 @@ class UserStore {
         this.count = this.count - 1
     }
 }
-export default function () {
+export default () => {
     if (store[skey]) {
         return store[skey]
     }
