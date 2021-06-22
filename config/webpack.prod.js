@@ -4,13 +4,14 @@ const { merge } = require('webpack-merge')
 const baseConfig = require('./webpack.base.js')
 const webpackbar = require('webpackbar') // 进度条
 const HtmlWebpackPlugin = require('html-webpack-plugin') //生成html 并自动添加bundles文件
+const projectConfig = require('../project.config')
 
 module.exports = merge(baseConfig, {
     mode: 'production',
     output: {
         filename: '[name].[contenthash].bundle.js',
         chunkFilename: 'chunks/[name].[contenthash].js',
-        path: path.resolve(__dirname, '../dist'), //dev模式下存在于内存中
+        path: path.resolve(__dirname, projectConfig.prodOutput), //dev模式下存在于内存中
         publicPath: '/'
     },
     module: {

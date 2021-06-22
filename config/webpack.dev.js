@@ -11,7 +11,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin') //生成html 并自动�
 module.exports = merge(baseConfig, {
     mode: 'development',
     output: {
-        path: path.join(__dirname, '../build'),
+        path: path.join(__dirname, '../dist'),
         filename: '[name].[hash].js',
         publicPath: projectCon.publicPath
     },

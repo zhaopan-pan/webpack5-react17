@@ -1,5 +1,8 @@
+const path = require('path')
+
 module.exports = {
+    port: 3000,
     publicPath: '/',
     realPath: '/index',
-    port: 3000
+    prodOutput: path.resolve(__dirname, './build')
 }
