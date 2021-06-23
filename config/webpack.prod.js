@@ -12,7 +12,7 @@ module.exports = merge(baseConfig, {
         filename: '[name].[contenthash].bundle.js',
         chunkFilename: 'chunks/[name].[contenthash].js',
         path: path.resolve(__dirname, projectConfig.prodOutput), //dev模式下存在于内存中
-        publicPath: '/'
+        publicPath: '/webpack5-react17'
     },
     module: {
         rules: [
