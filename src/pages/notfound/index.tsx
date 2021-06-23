@@ -1,6 +1,5 @@
 import React from 'react'
 
-/** 所需的所有资源 **/
 import './index.less'
 
 function NotFoundPageContainer() {
