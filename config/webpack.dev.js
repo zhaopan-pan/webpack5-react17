@@ -11,32 +11,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin') //生成html 并自动�
 module.exports = merge(baseConfig, {
     mode: 'development',
     output: {
-        path: path.join(__dirname, '../dist'),
+        path: path.join(__dirname, '../dist'), //dev模式下存在于内存中
         filename: '[name].[hash].js',
         publicPath: projectCon.publicPath
     },
     devtool: 'eval-source-map', // 报错的时候在控制台输出哪一行报错
-    optimization: {
-        // moduleIds: false,
-        /**
-         * 优化持久化缓存的, runtime 指的是 webpack 的运行环境(具体作用就是模块解析, 加载) 和 模块信息清单, 模块信息清单在每次有模块变更(hash 变更)时都会变更,
-         * 所以我们想把这部分代码单独打包出来, 配合后端缓存策略, 这样就不会因为某个模块的变更导致包含模块信息的模块,(通常会被包含在最后一个 bundle 中)缓存失效.
-         * optimization.runtimeChunk 就是告诉 webpack 是否要把这部分单独打包出来.
-         */
-        //提取引导模板
-        runtimeChunk: 'single',
-        //代码分割/模块分离
-        splitChunks: {
-            cacheGroups: {
-                //将第三方库(library)（例如 lodash 或 react很少像本地的源代码那样频繁修改）提取到单独的 vendor chunk 文件中
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all'
-                }
-            }
-        }
-    },
     module: {
         rules: [
             {
@@ -46,32 +25,21 @@ module.exports = merge(baseConfig, {
                 include: path.resolve(__dirname, '../src')
             },
             {
-                // .css 解析
-                test: /\.css$/,
+                // .样式解析
+                test: /\.((c|le)ss)$/i,
                 use: [
+                    // 将模块导出的内容作为样式并添加到 DOM 中
                     'style-loader',
+                    // 加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码
                     {
                         loader: 'css-loader',
                         options: {
-                            import: false,
                             // 以变量引入的方式使用样式
-                            importLoaders: true,
                             modules: {
                                 localIdentName: '[name]__[local]--[hash:base64:5]'
                             }
                         }
                     },
-                    'postcss-loader'
-                ]
-            },
-            {
-                // .less 解析
-                test: /\.less$/,
-                use: [
-                    // 将模块导出的内容作为样式并添加到 DOM 中
-                    'style-loader',
-                    // 加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码
-                    'css-loader',
                     //  使用 PostCSS 加载并转换 CSS/SSS 文件
                     'postcss-loader',
                     {

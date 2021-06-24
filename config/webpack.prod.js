@@ -2,17 +2,57 @@ const path = require('path')
 const webpack = require('webpack')
 const { merge } = require('webpack-merge')
 const baseConfig = require('./webpack.base.js')
-const webpackbar = require('webpackbar') // 进度条
-const HtmlWebpackPlugin = require('html-webpack-plugin') //生成html 并自动添加bundles文件
+// 进度条
+const webpackbar = require('webpackbar')
+//生成html 并自动添加bundles文件
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const projectConfig = require('../project.config')
+// production 环境的构建将 CSS 从你的 bundle 中分离出来，这样可以使用 CSS/JS 文件的并行加载
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+//使用 cssnano 优化和压缩 CSS。
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = merge(baseConfig, {
     mode: 'production',
     output: {
         filename: '[name].[contenthash].bundle.js',
         chunkFilename: 'chunks/[name].[contenthash].js',
-        path: path.resolve(__dirname, projectConfig.prodOutput), //dev模式下存在于内存中
+        path: path.resolve(__dirname, projectConfig.prodOutput),
         publicPath: '/'
+    },
+    optimization: {
+        /**
+         * 优化持久化缓存的, runtime 指的是 webpack 的运行环境(具体作用就是模块解析, 加载) 和 模块信息清单, 模块信息清单在每次有模块变更(hash 变更)时都会变更,
+         * 所以我们想把这部分代码单独打包出来, 配合后端缓存策略, 这样就不会因为某个模块的变更导致包含模块信息的模块,(通常会被包含在最后一个 bundle 中)缓存失效.
+         * optimization.runtimeChunk 就是告诉 webpack 是否要把这部分单独打包出来.
+         */
+        //提取引导模板
+        runtimeChunk: 'single',
+        //代码分割/模块分离
+        splitChunks: {
+            // 缓存组
+            // 利用 client 的长效缓存机制，命中缓存来消除请求，并减少向 server 获取资源，同时还能保证 client 代码和 server 代码版本一致。
+            cacheGroups: {
+                //将第三方库(library)（例如 lodash 或 react很少像本地的源代码那样频繁修改）提取到单独的 vendor chunk 文件中
+                libs: {
+                    test: /[\\/]node_modules[\\/](react|react-dom|mobx)[\\/]/,
+                    name: 'libs',
+                    chunks: 'all'
+                }
+            }
+        },
+        minimizer: [
+            new CssMinimizerPlugin({
+                minimizerOptions: {
+                    preset: [
+                        'default',
+                        {
+                            discardComments: { removeAll: true } //移除所有注释（包括以 /*! 开头的注释）
+                        }
+                    ]
+                }
+            })
+        ]
     },
     module: {
         rules: [
@@ -23,42 +63,25 @@ module.exports = merge(baseConfig, {
                 include: path.resolve(__dirname, '../src')
             },
             {
-                // .css 解析
-                test: /\.css$/,
+                // .样式解析
+                test: /\.((c|le)ss)$/i,
                 use: [
-                    'style-loader',
+                    MiniCssExtractPlugin.loader,
+                    // 加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码
                     {
                         loader: 'css-loader',
                         options: {
-                            import: false,
                             // 以变量引入的方式使用样式
-                            importLoaders: true,
                             modules: {
                                 localIdentName: '[name]__[local]--[hash:base64:5]'
                             }
                         }
                     },
-                    'postcss-loader'
-                ]
-            },
-            {
-                // .less 解析
-                test: /\.less$/,
-                use: [
-                    // 将模块导出的内容作为样式并添加到 DOM 中
-                    'style-loader',
-                    // 加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码
-                    'css-loader',
                     //  使用 PostCSS 加载并转换 CSS/SSS 文件
                     'postcss-loader',
                     {
                         //  加载并编译 LESS 文件
-                        loader: 'less-loader',
-                        options: {
-                            lessOptions: {
-                                strictMath: true
-                            }
-                        }
+                        loader: 'less-loader'
                     }
                 ]
             },
@@ -90,6 +113,11 @@ module.exports = merge(baseConfig, {
             }
         ]
     },
+    performance: {
+        hints: 'warning',
+        maxEntrypointSize: 500000, //入口起点的最大体积
+        maxAssetSize: 300000 //单个资源体积
+    },
     plugins: [
         new webpackbar(),
         new webpack.DefinePlugin({
@@ -99,6 +127,7 @@ module.exports = merge(baseConfig, {
             context: path.resolve(__dirname, '../'),
             manifest: require('./buildVendor/vendor-manifest.json')
         }),
+        new MiniCssExtractPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             title: 'webpack5+react17',
