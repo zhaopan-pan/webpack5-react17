@@ -35,6 +35,8 @@
     "keywords": [
         "react",
         "webpack",
+        "typescript",
+        "mobx",
         "react17",
         "webpack5",
         "koa",

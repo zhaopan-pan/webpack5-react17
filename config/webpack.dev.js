@@ -25,12 +25,10 @@ module.exports = merge(baseConfig, {
                 include: path.resolve(__dirname, '../src')
             },
             {
-                // .样式解析
-                test: /\.((c|le)ss)$/i,
+                // .css 解析
+                test: /\.css$/,
                 use: [
-                    // 将模块导出的内容作为样式并添加到 DOM 中
                     'style-loader',
-                    // 加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码
                     {
                         loader: 'css-loader',
                         options: {
@@ -40,6 +38,17 @@ module.exports = merge(baseConfig, {
                             }
                         }
                     },
+                    'postcss-loader'
+                ]
+            },
+            {
+                // .less 解析
+                test: /\.less$/,
+                use: [
+                    // 将模块导出的内容作为样式并添加到 DOM 中
+                    'style-loader',
+                    // 加载 CSS 文件并解析 import 的 CSS 文件，最终返回 CSS 代码
+                    'css-loader',
                     //  使用 PostCSS 加载并转换 CSS/SSS 文件
                     'postcss-loader',
                     {
