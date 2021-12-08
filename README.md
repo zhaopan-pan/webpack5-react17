@@ -1,3 +1,3 @@
 ### webpack5+react17+typescript
-react project template
+react project template by react17、webpack5、typescript、mobx...
 
