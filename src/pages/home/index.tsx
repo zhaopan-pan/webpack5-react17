@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import userStore from '@/hooks/useStore'
@@ -13,10 +13,17 @@ interface IProps {
 
 const Home: React.FC<any> = (props: IProps) => {
     const history = useHistory()
+    const [first, setFirst] = useState(1)
     const commonStore = userStore('commonStore')
     console.log(commonStore)
+    useEffect(() => {
+        console.log('---1-----')
+        setFirst(2)
+    }, [])
+
     return (
         <>
+            {first}
             <span>welcome to home</span>
             <button
                 onClick={() => {

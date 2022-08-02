@@ -31,6 +31,7 @@ module.exports = {
         }
     },
     rules: {
+        '@typescript-eslint/no-var-requires': 0, // 禁止使用 require 语句
         '@typescript-eslint/no-non-null-assertion': 0,
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-inferrable-types': 0, // 关闭类型推断

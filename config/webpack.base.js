@@ -1,6 +1,5 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //每次构建前清理 /dist 文件夹
-
 const isProd = process.env.NODE_ENV === 'production'
 const isdev = process.env.NODE_ENV === 'development'
 

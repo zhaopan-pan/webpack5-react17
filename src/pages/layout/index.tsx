@@ -12,7 +12,6 @@ interface IProps {
         reduce: () => void
     }
 }
-
 const Layout: React.FC<any> = (props: IProps) => {
     const { route } = props
     return (
@@ -21,7 +20,7 @@ const Layout: React.FC<any> = (props: IProps) => {
             <div className={styles.centerContent}>
                 <div className={styles.rightSide}>
                     <div>
-                        <Link to="/index/home">home</Link>
+                        <Link to="/index/home">home1</Link>
                     </div>
                     <div>
                         <Link to="/index/user">user</Link>
