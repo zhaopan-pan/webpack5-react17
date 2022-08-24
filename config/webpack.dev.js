@@ -7,6 +7,8 @@ const ESLintPlugin = require('eslint-webpack-plugin') // 已经替代eslint-load
 const { transformer, formatter } = require('./utils/resolve-error')
 const projectCon = require('../project.config')
 const HtmlWebpackPlugin = require('html-webpack-plugin') //生成html 并自动添加bundles文件
+const Webpackbar = require('webpackbar')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 module.exports = merge(baseConfig, {
     mode: 'development',
@@ -22,7 +24,10 @@ module.exports = merge(baseConfig, {
                 test: /\.(js|jsx|ts|tsx)?$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
-                include: path.resolve(__dirname, '../src')
+                include: path.resolve(__dirname, '../src'),
+                options: {
+                    plugins: [require.resolve('react-refresh/babel')]
+                }
             },
             {
                 // .css 解析
@@ -91,7 +96,10 @@ module.exports = merge(baseConfig, {
         ]
     },
     plugins: [
+        // 对hook的支持更友好
+        new ReactRefreshWebpackPlugin(),
         new webpack.HotModuleReplacementPlugin(), // 热更新之模块替换
+        new Webpackbar(),
         new FriendlyErrorsPlugin({
             // should the console be cleared between each compilation?
             // default is true

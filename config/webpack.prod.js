@@ -123,10 +123,11 @@ module.exports = merge(baseConfig, {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"production"'
         }),
-        new webpack.DllReferencePlugin({
-            context: path.resolve(__dirname, '../'),
-            manifest: require('./buildVendor/vendor-manifest.json')
-        }),
+        // webpack5底层已经优化了
+        // new webpack.DllReferencePlugin({
+        //     context: path.resolve(__dirname, '../'),
+        //     manifest: require('./buildVendor/vendor-manifest.json')
+        // }),
         new MiniCssExtractPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',

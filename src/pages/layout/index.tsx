@@ -20,7 +20,7 @@ const Layout: React.FC<any> = (props: IProps) => {
             <div className={styles.centerContent}>
                 <div className={styles.rightSide}>
                     <div>
-                        <Link to="/index/home">home1</Link>
+                        <Link to="/index/home">home</Link>
                     </div>
                     <div>
                         <Link to="/index/user">user</Link>

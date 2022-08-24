@@ -18,13 +18,13 @@ const Home: React.FC<any> = (props: IProps) => {
     console.log(commonStore)
     useEffect(() => {
         console.log('---1-----')
-        setFirst(2)
+        setFirst(f => f + 1)
     }, [])
 
     return (
         <>
             {first}
-            <span>welcome to home</span>
+            <span>welcome to home2</span>
             <button
                 onClick={() => {
                     history.push('/user')
