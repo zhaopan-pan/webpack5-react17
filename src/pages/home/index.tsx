@@ -32,6 +32,7 @@ const Home: React.FC<any> = (props: IProps) => {
             >
                 user
             </button>
+            <input type="text" placeholder='123'/>
         </>
     )
 }

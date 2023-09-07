@@ -6,7 +6,7 @@
     "author": "zp",
     "license": "ISC",
     "scripts": {
-        "start": "cross-env NODE_ENV=development && node ./config/koa-server.js",
+        "start": "export NODE_OPTIONS=--openssl-legacy-provider && cross-env NODE_ENV=development && node ./config/koa-server.js",
         "build": "cross-env NODE_ENV=production &&  webpack --mode=production --config ./config/webpack.prod.js",
         "prod-server": "npm run build && cross-env NODE_ENV=production node ./config/koa-server.js",
         "just-server": "cross-env NODE_ENV=production node ./config/koa-server.js",
