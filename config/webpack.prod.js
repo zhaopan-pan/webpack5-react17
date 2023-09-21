@@ -14,6 +14,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = merge(baseConfig, {
     mode: 'production',
+    // devtool: 'source-map', // 报错的时候在控制台输出哪一行报错
     output: {
         filename: '[name].[contenthash].bundle.js',
         chunkFilename: 'chunks/[name].[contenthash].js',
